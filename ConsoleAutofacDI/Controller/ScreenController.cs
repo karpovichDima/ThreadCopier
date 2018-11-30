@@ -7,17 +7,18 @@ namespace ConsoleAutofacDI.Controller
 {
     class ScreenController
     {
-        private IScreenService screenService;
-
+        //private readonly IScreenService _screenService;
+        private IInt _int;
         public ScreenController()
         {
-            IContainerDI container = AutofacInit.GetInstance();
-            screenService = container.Resolve<IScreenService, ScreenServiceImpl> ();
+            //IContainerDI _container = NinjectInit.GetInstance();
+            //_container.Register<IScreenService, ScreenServiceImpl>();
+            //_screenService = ComponentFactory.Resolve<IScreenService>();
         }
 
         public void ShowMessage()
         {
-            screenService.Show(new Screen { Bright = 54 });
+            _screenService.Show(new Screen { Bright = 54 });
         }
 
         

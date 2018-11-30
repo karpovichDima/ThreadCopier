@@ -5,33 +5,13 @@ using Ninject;
 
 namespace ConsoleAutofacDI.IoC
 {
-    class AutofacInit : IContainerDI, ILabelIoC
+    class AutofacInit
     {
-        private static AutofacInit insatnce;
-        public static IContainer container;
-        public static ILifetimeScope scope;
+        private static AutofacInit _instance;
 
         public static AutofacInit GetInstance()
         {
-            if (insatnce == null)
-            {
-                insatnce = new AutofacInit();
-                var builder = new ContainerBuilder();
-                builder.RegisterType<ScreenServiceImpl>().As<IScreenService>();
-                container = builder.Build();
-                scope = container.BeginLifetimeScope();
-            }
-            return insatnce;
-        }
-
-        public IScreenService Resolve()
-        {
-            return scope.Resolve<IScreenService>();
-        }
-
-        public T Resolve<T, TN>() where T : class where TN : class, T
-        {
-            return scope.Resolve<T>();
+            return _instance ?? (_instance = new AutofacInit());
         }
     }
 }

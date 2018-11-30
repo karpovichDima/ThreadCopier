@@ -6,17 +6,17 @@ using Ninject.Modules;
 
 namespace ConsoleAutofacDI.IoC
 {
-    class NinjectInit : NinjectModule, IContainerDI, ILabelIoC
+    class NinjectInit : NinjectModule
     {
-        private static NinjectInit ninjectInit;
-        public static IKernel kernel;
+        private static NinjectInit _ninjectInit;
+        public static IKernel _kernel;
 
         public static NinjectInit GetInstance()
         {
-            if (ninjectInit != null) return ninjectInit;
-            ninjectInit = new NinjectInit();
-            kernel = new StandardKernel(new NinjectInit());
-            return ninjectInit;
+            if (_ninjectInit != null) return _ninjectInit;
+            _ninjectInit = new NinjectInit();
+            _kernel = new StandardKernel(new NinjectInit());
+            return _ninjectInit;
         }
 
         public override void Load()
@@ -24,10 +24,6 @@ namespace ConsoleAutofacDI.IoC
             Bind<IScreenService>().To<ScreenServiceImpl>();
         }
 
-
-        public T Resolve<T, TN>() where T : class where TN : class, T
-        {
-            return kernel.Get<T>();
-        }
+        
     }
 }
