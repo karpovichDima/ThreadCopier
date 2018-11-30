@@ -5,7 +5,7 @@ using ConsoleAutofacDI.Model;
 
 namespace ConsoleAutofacDI.Service
 {
-    interface ScreenService
+    interface IScreenService
     {
         void Show(Screen screen);
         void On(Screen screen);

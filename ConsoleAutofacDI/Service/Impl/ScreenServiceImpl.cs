@@ -3,7 +3,7 @@ using ConsoleAutofacDI.Model;
 
 namespace ConsoleAutofacDI.Service.Impl
 {
-    class ScreenServiceImpl : ScreenService
+    class ScreenServiceImpl : IScreenService
     {
         public void Show(Screen screen) => Console.WriteLine("show image | bright:  ", screen.Bright);
 

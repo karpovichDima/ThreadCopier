@@ -1,4 +1,5 @@
 ﻿using System;
+using ConsoleAutofacDI.Controller;
 using ConsoleAutofacDI.Model;
 using ConsoleAutofacDI.Service;
 
@@ -7,11 +8,11 @@ namespace ConsoleAutofacDI
 {
     class Program
     {
-        private ScreenService screenService;
-
         static void Main(string[] args)
         {
-            screenService.Show(new Screen {Bright = 54});
+            var screenController = new ScreenController();
+            screenController.ShowMessage();
+            Console.ReadKey();
         }
     }
 }
