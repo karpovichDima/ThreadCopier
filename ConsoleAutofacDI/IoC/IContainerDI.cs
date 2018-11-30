@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace ConsoleAutofacDI.IoC
 {
-    interface IContainerDI
+    public interface IContainerDI
     {
+        T Resolve<T, TN>() where T : class where TN : class, T;
     }
 }

@@ -1,32 +1,37 @@
 ﻿using Autofac;
 using ConsoleAutofacDI.Service;
 using ConsoleAutofacDI.Service.Impl;
+using Ninject;
 
 namespace ConsoleAutofacDI.IoC
 {
-    public class AutofacInit : IContainerDI
+    class AutofacInit : IContainerDI, ILabelIoC
     {
-        private static AutofacInit sSoleInstance;
-
+        private static AutofacInit insatnce;
         public static IContainer container;
         public static ILifetimeScope scope;
 
-        private AutofacInit(){}
-
-        public static AutofacInit getInstance()
+        public static AutofacInit GetInstance()
         {
-            if (sSoleInstance == null)
+            if (insatnce == null)
             {
-                sSoleInstance = new AutofacInit();
+                insatnce = new AutofacInit();
                 var builder = new ContainerBuilder();
                 builder.RegisterType<ScreenServiceImpl>().As<IScreenService>();
                 container = builder.Build();
                 scope = container.BeginLifetimeScope();
             }
+            return insatnce;
+        }
 
-            
+        public IScreenService Resolve()
+        {
+            return scope.Resolve<IScreenService>();
+        }
 
-            return sSoleInstance;
+        public T Resolve<T, TN>() where T : class where TN : class, T
+        {
+            return scope.Resolve<T>();
         }
     }
 }

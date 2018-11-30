@@ -1,9 +1,7 @@
-﻿using Autofac;
-using ConsoleAutofacDI.IoC;
+﻿using ConsoleAutofacDI.IoC;
 using ConsoleAutofacDI.Service;
 using ConsoleAutofacDI.Model;
 using ConsoleAutofacDI.Service.Impl;
-using Ninject;
 
 namespace ConsoleAutofacDI.Controller
 {
@@ -13,10 +11,8 @@ namespace ConsoleAutofacDI.Controller
 
         public ScreenController()
         {
-            //  IContainerDI container = AutofacInit.getInstance();
-            // screenService = AutofacInit.scope.Resolve<IScreenService>();
-            IContainerDI container = NinjectInit.getInstance();
-            screenService = NinjectInit.kernel.Get<ScreenServiceImpl>();
+            IContainerDI container = AutofacInit.GetInstance();
+            screenService = container.Resolve<IScreenService, ScreenServiceImpl> ();
         }
 
         public void ShowMessage()
