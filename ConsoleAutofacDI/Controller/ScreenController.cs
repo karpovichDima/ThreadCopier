@@ -1,4 +1,5 @@
 ﻿using ConsoleAutofacDI.IoC;
+using ConsoleAutofacDI.IoC.Impl;
 using ConsoleAutofacDI.Service;
 using ConsoleAutofacDI.Model;
 using ConsoleAutofacDI.Service.Impl;
@@ -7,18 +8,20 @@ namespace ConsoleAutofacDI.Controller
 {
     class ScreenController
     {
-        //private readonly IScreenService _screenService;
-        private IInt _int;
+        private IScreenService screenService;
+
         public ScreenController()
         {
-            //IContainerDI _container = NinjectInit.GetInstance();
-            //_container.Register<IScreenService, ScreenServiceImpl>();
-            //_screenService = ComponentFactory.Resolve<IScreenService>();
+            var container = SimpleInjectorInit.GetInstance();
+            container.RegistrationDependency<IScreenService, ScreenServiceImpl>();
+            ScreenService = container.Resolve<IScreenService> ();
         }
+
+        internal IScreenService ScreenService { get; set; }
 
         public void ShowMessage()
         {
-            _screenService.Show(new Screen { Bright = 54 });
+            ScreenService.Show(new Screen { Bright = 54 });
         }
 
         
