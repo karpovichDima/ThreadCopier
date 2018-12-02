@@ -12,9 +12,9 @@ namespace ConsoleAutofacDI.Controller
 
         public ScreenController()
         {
-            var container = SimpleInjectorInit.GetInstance();
-            container.RegistrationDependency<IScreenService, ScreenServiceImpl>();
-            ScreenService = container.Resolve<IScreenService> ();
+            var container = UnityInit.GetInstance();
+            container.RegistrationDependency<IScreenService, BlackScreenServiceImpl>();
+            ScreenService = container.Resolve<IScreenService>();
         }
 
         internal IScreenService ScreenService { get; set; }
