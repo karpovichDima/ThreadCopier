@@ -14,7 +14,6 @@ namespace ConsoleAutofacDI
 
         static void Main(string[] args)
         {
-            Bootstrapper.RegisterComponents();
             var screenController = new ScreenController();
             screenController.ShowMessage();
             Console.ReadKey();
