@@ -18,13 +18,17 @@ namespace ConsoleAutofacDI
             screenController.ShowMessage();
             var speakerController = new SpeakerController();
             speakerController.PlayMusic();
+            var threadController = new ThreadController();
+            threadController.CreateThreeTask();
+
             Console.ReadKey();
         }
 
         static void RegistrationDependency()
         {
             AbstractContainer.AbsContainer.RegistrationDependency<IScreenService, BlackScreenServiceImpl>();
-            AbstractContainer.AbsContainer.RegistrationDependency<ISpeakerService, QuietSpeakerServiceImpl>();
+            AbstractContainer.AbsContainer.RegistrationDependency<ISpeakerService, LoudSpeakerServiceImpl>();
+            AbstractContainer.AbsContainer.RegistrationDependency<IThreadService, ThreadServiceImpl>();
         }
     }
 }

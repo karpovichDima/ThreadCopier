@@ -17,5 +17,7 @@ namespace ConsoleAutofacDI.Controller
         {
             ScreenService.Show(new Screen {Bright = 54});
         }
+
+
     }
 }

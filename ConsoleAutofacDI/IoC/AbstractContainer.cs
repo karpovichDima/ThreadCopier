@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ConsoleAutofacDI.IoC
 {
-    abstract class AbstractContainer
+    public abstract class AbstractContainer
     {
         public static AbstractContainer AbsContainer;
 

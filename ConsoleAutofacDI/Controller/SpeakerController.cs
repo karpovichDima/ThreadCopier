@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ConsoleAutofacDI.IoC;
+﻿using ConsoleAutofacDI.IoC;
 using ConsoleAutofacDI.Model;
 using ConsoleAutofacDI.Service.Impl;
 
