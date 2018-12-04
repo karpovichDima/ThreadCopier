@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using ConsoleAutofacDI.Model;
@@ -36,9 +38,7 @@ namespace ConsoleAutofacDI.Service.Impl
 
         public void TaskContinueWith()
         {
-            Task task1 = new Task(() => {
-                Console.WriteLine("Task 1 started");
-            });
+            Task task1 = new Task(() => { Console.WriteLine("Task 1 started"); });
             Task task2 = task1.ContinueWith(Load);
             task1.Start();
             Console.WriteLine("Task 2 start work");
@@ -57,7 +57,8 @@ namespace ConsoleAutofacDI.Service.Impl
         public void ParallelsStart()
         {
             Parallel.Invoke(Display,
-                () => {
+                () =>
+                {
                     Console.WriteLine("Current task: " + Task.CurrentId);
                     Thread.Sleep(3000);
                 },
@@ -95,22 +96,106 @@ namespace ConsoleAutofacDI.Service.Impl
                 cancelTokenSource.Cancel();
         }
 
-        static void Display()
+        public void BreakParallel()
         {
-            Console.WriteLine("Current task: " +  Task.CurrentId);
+            CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
+            CancellationToken token = cancelTokenSource.Token;
+
+            new Task(() =>
+            {
+                Thread.Sleep(400);
+                cancelTokenSource.Cancel();
+            }).Start();
+
+            try
+            {
+                Parallel.ForEach<int>(new List<int>() {1, 2, 3, 4, 5, 6, 7, 8},
+                    new ParallelOptions {CancellationToken = token}, Factorial);
+            }
+            catch (OperationCanceledException ex)
+            {
+                Console.WriteLine("Break operation");
+            }
+            finally
+            {
+                cancelTokenSource.Dispose();
+            }
+
+            Console.ReadLine();
+        }
+
+        public void Display()
+        {
+            Console.WriteLine("Current task: " + Task.CurrentId);
             Thread.Sleep(3000);
         }
 
-        static void Factorial(int x)
+        public void Factorial(int x)
         {
             int result = 1;
             for (int i = 1; i <= x; i++)
             {
                 result *= i;
             }
+
             Console.WriteLine("Current task: " + Task.CurrentId);
             Thread.Sleep(3000);
             Console.WriteLine("Result: " + result);
+        }
+
+        public static int Factorial2(int x)
+        {
+            int result = 1;
+            for (int i = 1; i <= x; i++)
+            {
+                result *= i;
+            }
+
+            Console.WriteLine("Current task: " + Task.CurrentId);
+            Thread.Sleep(3000);
+            Console.WriteLine("Result: " + result);
+            return result;
+        }
+
+        public async void ReadWriteAsync()
+        {
+            string s = "Hello";
+            using (StreamWriter writer = new StreamWriter("W://file.txt", false))
+            {
+                Console.WriteLine("Start write");
+                await writer.WriteLineAsync(s);
+                Console.WriteLine("End write");
+            }
+
+            using (StreamReader reader = new StreamReader("W://file.txt"))
+            {
+                Console.WriteLine("Start read");
+                string result = await reader.ReadToEndAsync();
+                Console.WriteLine("End read");
+                Console.WriteLine(result);
+            }
+        }
+
+        public void WriteAsync()
+        {
+            ReadWriteAsync();
+            Console.WriteLine("DoWork");
+            Console.Read();
+        }
+
+        public void CalculateFactorialAsync()
+        {
+            Console.WriteLine("UI: DoWork");
+            FactorialAsyncReturnValue(9);
+            Console.WriteLine("UI: DoWork");
+            Console.WriteLine("EndMainMethod");
+        }
+
+        static async void FactorialAsyncReturnValue(int n)
+        {
+            Console.WriteLine("Started task");
+            int x = await Task.Run(() => Factorial2(n));
+            Console.WriteLine($"Factorial equal {x}");
         }
     }
 }

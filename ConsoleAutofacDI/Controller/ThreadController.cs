@@ -36,5 +36,20 @@ namespace ConsoleAutofacDI.Controller
         {
             _threadService.BreakTask();
         }
+
+        public void BreakParallel()
+        {
+            _threadService.BreakParallel();
+        }
+
+        public void WriteAsync()
+        {
+            _threadService.WriteAsync();
+        }
+
+        public void CalculateFactorialAsync()
+        {
+            _threadService.CalculateFactorialAsync();
+        }
     }
 }

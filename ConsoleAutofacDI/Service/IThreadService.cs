@@ -11,5 +11,8 @@ namespace ConsoleAutofacDI.Service
         void TaskContinueWith();
         void ParallelsStart();
         void BreakTask();
+        void BreakParallel();
+        void WriteAsync();
+        void CalculateFactorialAsync();
     }
 }
