@@ -7,5 +7,6 @@ namespace ConsoleAutofacDI.Service
     interface IThreadService
     {
         void CreateThreeTask();
+        void TaskWithReturnValue();
     }
 }

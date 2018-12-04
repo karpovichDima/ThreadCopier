@@ -20,5 +20,10 @@ namespace ConsoleAutofacDI.Controller
         {
             _threadService.CreateThreeTask();
         }
+
+        public void TaskWithReturnValue()
+        {
+            _threadService.TaskWithReturnValue();
+        }
     }
 }

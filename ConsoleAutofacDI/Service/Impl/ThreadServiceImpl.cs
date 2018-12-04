@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using ConsoleAutofacDI.Model;
 
 namespace ConsoleAutofacDI.Service.Impl
 {
@@ -16,8 +17,19 @@ namespace ConsoleAutofacDI.Service.Impl
                 new Task(() => Console.WriteLine("Third Task"))
             };
             foreach (var element in tasks)
-            element.Start();
+                element.Start();
             Task.WaitAll(tasks);
+        }
+
+        public void TaskWithReturnValue()
+        {
+            new Task<Screen>(() =>
+            {
+                Console.WriteLine("Task started");
+                var screen = new Screen {Size = 7, Resolution = "1920*1080"};
+                Console.WriteLine($"Size screen: {screen.Size} ||| Resolution: {screen.Resolution}");
+                return screen;
+            }).Start();
         }
     }
 }
