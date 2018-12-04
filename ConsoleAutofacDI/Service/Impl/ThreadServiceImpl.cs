@@ -9,6 +9,11 @@ namespace ConsoleAutofacDI.Service.Impl
 {
     class ThreadServiceImpl : IThreadService
     {
+        delegate void Tasks();
+
+        private Tasks task;
+
+
         public void CreateThreeTask()
         {
             Console.WriteLine("///////////////////////////////////");
@@ -56,14 +61,14 @@ namespace ConsoleAutofacDI.Service.Impl
 
         public void ParallelsStart()
         {
-            Parallel.Invoke(Display,
-                () =>
-                {
-                    Console.WriteLine("Current task: " + Task.CurrentId);
-                    Thread.Sleep(3000);
-                },
-                () => Factorial(5));
-            Console.ReadLine();
+            /* Parallel.Invoke(Display,
+                 () =>
+                 {
+                     Console.WriteLine("Current task: " + Task.CurrentId);
+                     Thread.Sleep(3000);
+                 },
+                 () => Factorial(5));
+             Console.ReadLine();*/
         }
 
         public void BreakTask()
@@ -92,7 +97,7 @@ namespace ConsoleAutofacDI.Service.Impl
 
             Console.WriteLine("Set Y for decline task or other symbol for continue:");
             string s = Console.ReadLine();
-            if (s == "Y")
+            if (s == "1")
                 cancelTokenSource.Cancel();
         }
 
@@ -109,8 +114,8 @@ namespace ConsoleAutofacDI.Service.Impl
 
             try
             {
-                Parallel.ForEach<int>(new List<int>() {1, 2, 3, 4, 5, 6, 7, 8},
-                    new ParallelOptions {CancellationToken = token}, Factorial);
+                /*Parallel.ForEach<int>(new List<int>() {1, 2, 3, 4, 5, 6, 7, 8},
+                    new ParallelOptions {CancellationToken = token}, Factorial);*/
             }
             catch (OperationCanceledException ex)
             {
@@ -130,8 +135,9 @@ namespace ConsoleAutofacDI.Service.Impl
             Thread.Sleep(3000);
         }
 
-        public void Factorial(int x)
+        public void Factorial()
         {
+            int x = 4;
             int result = 1;
             for (int i = 1; i <= x; i++)
             {
@@ -189,6 +195,21 @@ namespace ConsoleAutofacDI.Service.Impl
             FactorialAsyncReturnValue(9);
             Console.WriteLine("UI: DoWork");
             Console.WriteLine("EndMainMethod");
+        }
+
+        public void CreateTaskForWorkWithPattern()
+        {
+            task = Factorial;
+            Console.WriteLine('\n' + "Start of creating queue");
+
+            using(var taskQueue = new TaskQueue<Tasks>(5))
+            {
+                taskQueue.EnqueueTask(task);
+                taskQueue.EnqueueTask(task);
+                taskQueue.EnqueueTask(task);
+                taskQueue.EnqueueTask(task);
+                taskQueue.EnqueueTask(task);
+            }
         }
 
         static async void FactorialAsyncReturnValue(int n)

@@ -19,7 +19,7 @@ namespace ConsoleAutofacDI
             var speakerController = new SpeakerController();
             speakerController.PlayMusic();
             var threadController = new ThreadController();
-            threadController.CalculateFactorialAsync();
+            threadController.CreateTaskQueue();
 
 
             Console.ReadKey();

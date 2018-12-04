@@ -51,5 +51,10 @@ namespace ConsoleAutofacDI.Controller
         {
             _threadService.CalculateFactorialAsync();
         }
+
+        public void CreateTaskQueue()
+        {
+            _threadService.CreateTaskForWorkWithPattern();
+        }
     }
 }

@@ -14,5 +14,6 @@ namespace ConsoleAutofacDI.Service
         void BreakParallel();
         void WriteAsync();
         void CalculateFactorialAsync();
+        void CreateTaskForWorkWithPattern();
     }
 }

@@ -9,6 +9,11 @@ namespace ConsoleAutofacDI.Model
         public float Size { get; set; }
         public string Resolution { get; set; }
 
+        public Screen()
+        {
+            Console.WriteLine("Object been created");
+        }
+
         protected bool Equals(Screen other)
         {
             return Bright == other.Bright && Size.Equals(other.Size) && string.Equals(Resolution, other.Resolution);
