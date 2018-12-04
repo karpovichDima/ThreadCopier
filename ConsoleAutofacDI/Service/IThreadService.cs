@@ -8,5 +8,8 @@ namespace ConsoleAutofacDI.Service
     {
         void CreateThreeTask();
         void TaskWithReturnValue();
+        void TaskContinueWith();
+        void ParallelsStart();
+        void BreakTask();
     }
 }

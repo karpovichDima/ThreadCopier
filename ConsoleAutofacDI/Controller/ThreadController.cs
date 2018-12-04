@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ConsoleAutofacDI.IoC;
+﻿using ConsoleAutofacDI.IoC;
 using ConsoleAutofacDI.Service;
-using ConsoleAutofacDI.Service.Impl;
 
 namespace ConsoleAutofacDI.Controller
 {
@@ -24,6 +20,21 @@ namespace ConsoleAutofacDI.Controller
         public void TaskWithReturnValue()
         {
             _threadService.TaskWithReturnValue();
+        }
+
+        public void TaskContinueWith()
+        {
+            _threadService.TaskContinueWith();
+        }
+
+        public void ParallelsStart()
+        {
+            _threadService.ParallelsStart();
+        }
+
+        public void BreakTask()
+        {
+            _threadService.BreakTask();
         }
     }
 }
