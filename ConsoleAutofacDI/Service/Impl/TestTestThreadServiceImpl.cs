@@ -18,9 +18,9 @@ namespace ConsoleAutofacDI.Service.Impl
             Console.WriteLine("///////////////////////////////////");
             Console.WriteLine("start CreateThreeTask");
             Task[] tasks = {
-                new Task(() => Console.WriteLine("First Task")),
-                new Task(() => Console.WriteLine("Second Task")),
-                new Task(() => Console.WriteLine("Third Task"))
+                new Task(() => Console.WriteLine("First CustomTask")),
+                new Task(() => Console.WriteLine("Second CustomTask")),
+                new Task(() => Console.WriteLine("Third CustomTask"))
             };
             foreach (var element in tasks)
                 element.Start();
@@ -32,7 +32,7 @@ namespace ConsoleAutofacDI.Service.Impl
         {
             new Task<Screen>(() =>
             {
-                Console.WriteLine("Task started");
+                Console.WriteLine("CustomTask started");
                 var screen = new Screen {Size = 7, Resolution = "1920*1080"};
                 Console.WriteLine($"Size screen: {screen.Size} ||| Resolution: {screen.Resolution}");
                 return screen;
@@ -41,13 +41,13 @@ namespace ConsoleAutofacDI.Service.Impl
 
         public void TaskContinueWith()
         {
-            Task task1 = new Task(() => { Console.WriteLine("Task 1 started"); });
+            Task task1 = new Task(() => { Console.WriteLine("CustomTask 1 started"); });
             Task task2 = task1.ContinueWith(Load);
             task1.Start();
-            Console.WriteLine("Task 2 start work");
+            Console.WriteLine("CustomTask 2 start work");
             task2.Wait();
-            Console.WriteLine("Task 1 ended work");
-            Console.WriteLine("Task 2 ended work");
+            Console.WriteLine("CustomTask 1 ended work");
+            Console.WriteLine("CustomTask 2 ended work");
             Console.WriteLine("Main ended work");
         }
 
@@ -62,7 +62,7 @@ namespace ConsoleAutofacDI.Service.Impl
             /* Parallel.Invoke(Display,
                  () =>
                  {
-                     Console.WriteLine("Current task: " + Task.CurrentId);
+                     Console.WriteLine("Current task: " + CustomTask.CurrentId);
                      Thread.Sleep(3000);
                  },
                  () => Factorial(5));
@@ -81,7 +81,7 @@ namespace ConsoleAutofacDI.Service.Impl
                 {
                     if (token.IsCancellationRequested)
                     {
-                        Console.WriteLine("Task breaking");
+                        Console.WriteLine("CustomTask breaking");
                         return;
                     }
 

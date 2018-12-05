@@ -14,15 +14,14 @@ namespace ConsoleAutofacDI.Model
         private readonly Queue<ThreadServiceImpl.Task> _taskQ;
         private readonly CancellationToken _token;
         private Queue<FileInfo> _files;
-
         private CancellationTokenSource _tokenSource;
         private CancellationToken _cancelToken;
 
-        public TaskQueue(int workerCount, Queue<FileInfo> files)
+        public TaskQueue(int workerCount, Queue<FileInfo> files, CancellationTokenSource tokenSource,
+            CancellationToken cancelToken)
         {
-            _tokenSource = new CancellationTokenSource();
-            _cancelToken = _tokenSource.Token;
-
+            _cancelToken = cancelToken;
+            _tokenSource = tokenSource;
             _files = files;
             _taskQ = new Queue<ThreadServiceImpl.Task>();
             Console.WriteLine($"{Value}Set 1 for decline task or other symbol for continue:");
@@ -69,30 +68,23 @@ namespace ConsoleAutofacDI.Model
                     Console.WriteLine($"{Value}This signals our exit");
                     return;
                 }
+
                 Console.WriteLine($"{Value}Simulate time-consuming task");
                 task(_files.Dequeue());
-                
-                Thread.Sleep(2000);
 
-                String consoleKeyInfo = Console.ReadLine();
-
-                if (consoleKeyInfo == "@")
+                if (_tokenSource.IsCancellationRequested)
                 {
-                    _tokenSource.Cancel();
-                }
-
-                try
-                {
-                    _cancelToken.ThrowIfCancellationRequested();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("EXCEPTION - THE END");
-                    return;
+                    try
+                    {
+                        _cancelToken.ThrowIfCancellationRequested();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("EXCEPTION - THE END");
+                        return;
+                    }
                 }
             }
-
         }
-
     }
 }
