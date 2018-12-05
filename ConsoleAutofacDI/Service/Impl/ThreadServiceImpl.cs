@@ -1,26 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using ConsoleAutofacDI.Model;
 
 namespace ConsoleAutofacDI.Service.Impl
 {
-    class ThreadServiceImpl : IThreadService
+    public class ThreadServiceImpl : IThreadService
     {
+        public static int ThreadCount = 1;
         private string _pathInput = "W:\\Copy_1";
         private string _pathOutput = "W:\\Copy_2";
+        private TaskQueue _taskQueue;
+        private FileInfo[] _files;
 
+        public delegate void Task(FileInfo fileInfo);
+        private Task _task;
+        
         public void StartCopyingFiles()
         {
             var dr = new DirectoryInfo(_pathInput);
-            FileInfo[] files = dr.GetFiles("*.txt");
-
-            foreach (FileInfo fi in files)
+            _files = dr.GetFiles("*.txt");
+            _taskQueue = new TaskQueue(ThreadCount, _files);
+            _task = Copier;
+            for (int i = 0; i < _files.Length; i++)
             {
-                fi.CopyTo(_pathOutput + "\\" + fi.Name, true);
-                Console.WriteLine("File " + fi.Name + " | IS COPIED");
+                _taskQueue.EnqueueTask(_task);
             }
-
         }
+        
+        private void Copier(FileInfo fileInfo)
+        {
+            string fileName = fileInfo.Name;
+            fileInfo.CopyTo(_pathOutput + "\\" + fileName, true);
+            Console.WriteLine("FILE " + fileName + " | IS COPIED");
+        }  
     }
 }
+

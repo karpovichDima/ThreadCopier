@@ -1,20 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
+using ConsoleAutofacDI.Service.Impl;
 
 namespace ConsoleAutofacDI.Model
 {
-    public class TaskQueue<T> : IDisposable where T : class
+    public class TaskQueue : IDisposable 
     {
         public const string Value = "\n";
         private readonly object _locker = new object();
         private readonly Thread[] _workers;
-        private readonly Queue<T> _taskQ = new Queue<T>();
+        private readonly Queue<ThreadServiceImpl.Task> _taskQ = new Queue<ThreadServiceImpl.Task>();
         private readonly CancellationTokenSource _cancelTokenSource;
         private readonly CancellationToken _token;
 
-        public TaskQueue(int workerCount)
+        private FileInfo[] _files;
+        private int _counter = 0;
+
+        public TaskQueue(int workerCount, FileInfo[] files)
         {
+            _files = files;
             _cancelTokenSource = new CancellationTokenSource();
             _token = _cancelTokenSource.Token;
             Console.WriteLine(Value + "Set 1 for decline task or other symbol for continue:");
@@ -35,7 +41,7 @@ namespace ConsoleAutofacDI.Model
             }
         }
 
-        public void EnqueueTask(T task)
+        public void EnqueueTask(ThreadServiceImpl.Task task)
         {
             lock (_locker)
             {
@@ -49,7 +55,7 @@ namespace ConsoleAutofacDI.Model
             while (true)
             {
                 if (_token.IsCancellationRequested) return;
-                T task;
+                ThreadServiceImpl.Task task;
                 lock (_locker)
                 {
                     while (_taskQ.Count == 0) Monitor.Wait(_locker);
@@ -63,11 +69,15 @@ namespace ConsoleAutofacDI.Model
                 }
 
                 Console.WriteLine(Value + "Simulate time-consuming task");
-                Thread.Sleep(1000);
-                task.ToString();
 
-                var s = Console.ReadLine();
-                if (s == "1") _cancelTokenSource.Cancel();
+                if (_files.Length >= _counter)
+                {
+                    task(_files[_counter]);
+                    _counter++;
+                }
+                
+                /*var s = Console.ReadLine();
+                if (s == "1") _cancelTokenSource.Cancel();*/
             }
         }
     }
