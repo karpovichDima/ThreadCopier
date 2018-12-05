@@ -4,7 +4,8 @@ using System.Text;
 
 namespace ConsoleAutofacDI.Service
 {
-    class ThreadServiceImpl
+    interface IThreadService
     {
+        void StartCopyingFiles();
     }
 }
