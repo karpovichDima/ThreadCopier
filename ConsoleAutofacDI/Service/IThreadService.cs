@@ -4,16 +4,7 @@ using System.Text;
 
 namespace ConsoleAutofacDI.Service
 {
-    interface IThreadService
+    class ThreadServiceImpl
     {
-        void CreateThreeTask();
-        void TaskWithReturnValue();
-        void TaskContinueWith();
-        void ParallelsStart();
-        void BreakTask();
-        void BreakParallel();
-        void WriteAsync();
-        void CalculateFactorialAsync();
-        void CreateTaskForWorkWithPattern();
     }
 }

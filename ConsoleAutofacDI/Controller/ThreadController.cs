@@ -1,60 +1,25 @@
-﻿using ConsoleAutofacDI.IoC;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using ConsoleAutofacDI.IoC;
+using ConsoleAutofacDI.Model;
 using ConsoleAutofacDI.Service;
+using ConsoleAutofacDI.Service.Impl;
 
 namespace ConsoleAutofacDI.Controller
 {
     class ThreadController
     {
-        private IThreadService _threadService;
+        internal IThreadService ThreadService { get; set; }
 
         public ThreadController()
         {
-            _threadService = AbstractContainer.AbsContainer.Resolve<IThreadService>();
+            ThreadService = AbstractContainer.AbsContainer.Resolve<IThreadService>();
         }
 
-        public void CreateThreeTask()
+        public void StartCopyingFiles()
         {
-            _threadService.CreateThreeTask();
-        }
-
-        public void TaskWithReturnValue()
-        {
-            _threadService.TaskWithReturnValue();
-        }
-
-        public void TaskContinueWith()
-        {
-            _threadService.TaskContinueWith();
-        }
-
-        public void ParallelsStart()
-        {
-            _threadService.ParallelsStart();
-        }
-
-        public void BreakTask()
-        {
-            _threadService.BreakTask();
-        }
-
-        public void BreakParallel()
-        {
-            _threadService.BreakParallel();
-        }
-
-        public void WriteAsync()
-        {
-            _threadService.WriteAsync();
-        }
-
-        public void CalculateFactorialAsync()
-        {
-            _threadService.CalculateFactorialAsync();
-        }
-
-        public void CreateTaskQueue()
-        {
-            _threadService.CreateTaskForWorkWithPattern();
+            ThreadService.StartCopyingFiles();
         }
     }
 }

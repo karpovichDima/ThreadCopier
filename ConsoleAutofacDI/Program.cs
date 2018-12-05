@@ -14,13 +14,13 @@ namespace ConsoleAutofacDI
             AbstractContainer.AbsContainer = UnityInit.GetInstance();
             RegistrationDependency();
 
-            var screenController = new ScreenController();
+            /*var screenController = new ScreenController();
             screenController.ShowMessage();
             var speakerController = new SpeakerController();
-            speakerController.PlayMusic();
-            var threadController = new ThreadController();
-            threadController.CreateTaskQueue();
+            speakerController.PlayMusic();*/
 
+            var threadController = new ThreadController();
+            threadController.StartCopyingFiles();
 
             Console.ReadKey();
         }
@@ -28,8 +28,9 @@ namespace ConsoleAutofacDI
         static void RegistrationDependency()
         {
             AbstractContainer.AbsContainer.RegistrationDependency<IScreenService, BlackScreenServiceImpl>();
-            AbstractContainer.AbsContainer.RegistrationDependency<ISpeakerService, LoudSpeakerServiceImpl>();
             AbstractContainer.AbsContainer.RegistrationDependency<IThreadService, ThreadServiceImpl>();
+            AbstractContainer.AbsContainer.RegistrationDependency<ISpeakerService, LoudSpeakerServiceImpl>();
+            AbstractContainer.AbsContainer.RegistrationDependency<ITestThreadService, TestTestThreadServiceImpl>();
         }
     }
 }

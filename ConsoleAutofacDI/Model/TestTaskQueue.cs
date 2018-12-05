@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace ConsoleAutofacDI.Model
 {
-    public class TaskQueue<T> : IDisposable where T : class
+    public class TestTaskQueue<T> : IDisposable where T : class
     {
         public const string Value = "\n";
         private readonly object _locker = new object();
@@ -13,7 +13,7 @@ namespace ConsoleAutofacDI.Model
         private readonly CancellationTokenSource _cancelTokenSource;
         private readonly CancellationToken _token;
 
-        public TaskQueue(int workerCount)
+        public TestTaskQueue(int workerCount)
         {
             _cancelTokenSource = new CancellationTokenSource();
             _token = _cancelTokenSource.Token;
