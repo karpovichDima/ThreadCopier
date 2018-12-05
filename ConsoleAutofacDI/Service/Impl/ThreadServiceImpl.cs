@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using ConsoleAutofacDI.Model;
 
@@ -10,23 +11,21 @@ namespace ConsoleAutofacDI.Service.Impl
         public delegate void Task(FileInfo fileInfo);
         private Task _task;
 
-        public static int ThreadCount = 144;
+        public static int ThreadCount = 1;
             
         public void StartCopyingFiles()
         {
-            Queue<FileInfo> queueFiles = new Queue<FileInfo>();
-            DirectoryInfo dr = new DirectoryInfo("W:\\Copy_1");
-            foreach (FileInfo file in dr.GetFiles("*.txt"))
+            var queueFiles = new Queue<FileInfo>();
+            var dr = new DirectoryInfo("W:\\Copy_1");
+            foreach (var file in dr.GetFiles("*.txt"))
                 queueFiles.Enqueue(file);
-            TaskQueue taskQueue = new TaskQueue(ThreadCount, queueFiles);
+            var taskQueue = new TaskQueue(ThreadCount, queueFiles);
             _task = Copier;
-            for (int i = 0; i < queueFiles.Count; i++)
-            {
+            for (var i = 0; i < queueFiles.Count; i++)
                 taskQueue.EnqueueTask(_task);
-            }
         }
         
-        private void Copier(FileInfo fileInfo)
+        private static void Copier(FileInfo fileInfo)
         {
             string fileName = fileInfo.Name;
             fileInfo.CopyTo("W:\\Copy_2" + "\\" + fileName, true);

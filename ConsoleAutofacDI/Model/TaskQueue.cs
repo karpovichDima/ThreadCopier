@@ -11,30 +11,31 @@ namespace ConsoleAutofacDI.Model
         public const string Value = "\n";
         private readonly object _locker = new object();
         private readonly Thread[] _workers;
-        private readonly Queue<ThreadServiceImpl.Task> _taskQ = new Queue<ThreadServiceImpl.Task>();
-        private readonly CancellationTokenSource _cancelTokenSource;
+        private readonly Queue<ThreadServiceImpl.Task> _taskQ;
         private readonly CancellationToken _token;
-        private object _sync;
         private Queue<FileInfo> _files;
 
+        private CancellationTokenSource _tokenSource;
+        private CancellationToken _cancelToken;
 
         public TaskQueue(int workerCount, Queue<FileInfo> files)
         {
-            _sync = new object();
+            _tokenSource = new CancellationTokenSource();
+            _cancelToken = _tokenSource.Token;
+
             _files = files;
-            _cancelTokenSource = new CancellationTokenSource();
-            _token = _cancelTokenSource.Token;
-            Console.WriteLine(Value + "Set 1 for decline task or other symbol for continue:");
+            _taskQ = new Queue<ThreadServiceImpl.Task>();
+            Console.WriteLine($"{Value}Set 1 for decline task or other symbol for continue:");
 
             _workers = new Thread[workerCount];
-            Console.WriteLine(Value + " Create and start a separate thread for each worker");
+            Console.WriteLine($"{Value} Create and start a separate thread for each worker");
             for (var i = 0; i < workerCount; i++)
                 (_workers[i] = new Thread(Consume)).Start();
         }
 
         public void Dispose()
         {
-            Console.WriteLine(Value + "Enqueue one null task per worker to make each exit.");
+            Console.WriteLine($"{Value}Enqueue one null task per worker to make each exit.");
             foreach (var worker in _workers)
             {
                 EnqueueTask(null);
@@ -65,14 +66,33 @@ namespace ConsoleAutofacDI.Model
 
                 if (task == null)
                 {
-                    Console.WriteLine(Value + "This signals our exit");
+                    Console.WriteLine($"{Value}This signals our exit");
                     return;
                 }
-
-                Console.WriteLine(Value + "Simulate time-consuming task");
-
+                Console.WriteLine($"{Value}Simulate time-consuming task");
                 task(_files.Dequeue());
+                
+                Thread.Sleep(2000);
+
+                String consoleKeyInfo = Console.ReadLine();
+
+                if (consoleKeyInfo == "@")
+                {
+                    _tokenSource.Cancel();
+                }
+
+                try
+                {
+                    _cancelToken.ThrowIfCancellationRequested();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("EXCEPTION - THE END");
+                    return;
+                }
             }
+
         }
+
     }
 }
