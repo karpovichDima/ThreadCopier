@@ -6,7 +6,7 @@ using ConsoleAutofacDI.Service.Impl;
 
 namespace ConsoleAutofacDI.Model
 {
-    public class TaskQueue : IDisposable 
+    public class TaskQueue : IDisposable
     {
         public const string Value = "\n";
         private readonly object _locker = new object();
@@ -14,12 +14,13 @@ namespace ConsoleAutofacDI.Model
         private readonly Queue<ThreadServiceImpl.Task> _taskQ = new Queue<ThreadServiceImpl.Task>();
         private readonly CancellationTokenSource _cancelTokenSource;
         private readonly CancellationToken _token;
+        private object _sync;
+        private Queue<FileInfo> _files;
 
-        private FileInfo[] _files;
-        private int _counter = 0;
 
-        public TaskQueue(int workerCount, FileInfo[] files)
+        public TaskQueue(int workerCount, Queue<FileInfo> files)
         {
+            _sync = new object();
             _files = files;
             _cancelTokenSource = new CancellationTokenSource();
             _token = _cancelTokenSource.Token;
@@ -70,14 +71,7 @@ namespace ConsoleAutofacDI.Model
 
                 Console.WriteLine(Value + "Simulate time-consuming task");
 
-                if (_files.Length >= _counter)
-                {
-                    task(_files[_counter]);
-                    _counter++;
-                }
-                
-                /*var s = Console.ReadLine();
-                if (s == "1") _cancelTokenSource.Cancel();*/
+                task(_files.Dequeue());
             }
         }
     }
