@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
 using System.Threading.Tasks;
 using ConsoleAutofacDI.Model;
 
 namespace ConsoleAutofacDI.Service.Impl
 {
-    class LoudSpeakerServiceImpl : ISpeakerService
+    public class LoudSpeakerServiceImpl : ISpeakerService
     {
         public void PlayMusic(Speaker speaker)
         {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,7 +6,7 @@ using ConsoleAutofacDI.Model;
 
 namespace ConsoleAutofacDI.Service.Impl
 {
-    internal class TestTestThreadServiceImpl : ITestThreadService
+    public class TestTestThreadServiceImpl : ITestThreadService
     {
         private delegate void Tasks();
 

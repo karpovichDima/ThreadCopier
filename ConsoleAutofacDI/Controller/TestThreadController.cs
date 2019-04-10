@@ -3,9 +3,9 @@ using ConsoleAutofacDI.Service;
 
 namespace ConsoleAutofacDI.Controller
 {
-    class TestThreadController
+    public class TestThreadController
     {
-        private ITestThreadService _testThreadService;
+        private readonly ITestThreadService _testThreadService;
 
         public TestThreadController()
         {

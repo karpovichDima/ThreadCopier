@@ -1,11 +1,9 @@
 ﻿using ConsoleAutofacDI.IoC;
-using ConsoleAutofacDI.Model;
-using ConsoleAutofacDI.Service.Impl;
+using ConsoleAutofacDI.Service;
 
 namespace ConsoleAutofacDI.Controller
 {
-
-    class SpeakerController
+    public class SpeakerController
     {
         internal ISpeakerService SpeakerService { get; set; }
 
@@ -13,12 +11,5 @@ namespace ConsoleAutofacDI.Controller
         {
             SpeakerService = AbstractContainer.AbsContainer.Resolve<ISpeakerService>();
         }
-        
-        public void PlayMusic()
-        {
-            SpeakerService.PlayMusic(new Speaker { Volume = 79 });
-        }
     }
-    
-    
 }

@@ -2,7 +2,7 @@
 
 namespace ConsoleAutofacDI.IoC.Impl
 {
-    class SimpleInjectorInit : AbstractContainer
+    public class SimpleInjectorInit : AbstractContainer
     {
         private static SimpleInjectorInit _simpleInjector;
         public static Container Container;

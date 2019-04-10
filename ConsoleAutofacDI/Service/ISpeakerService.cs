@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ConsoleAutofacDI.Model;
+﻿using ConsoleAutofacDI.Model;
 
-namespace ConsoleAutofacDI.Service.Impl
+namespace ConsoleAutofacDI.Service
 {
     interface ISpeakerService
     {

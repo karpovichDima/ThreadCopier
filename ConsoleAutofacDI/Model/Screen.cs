@@ -1,9 +1,8 @@
-﻿
-using System;
+﻿using System;
 
 namespace ConsoleAutofacDI.Model
 {
-    class Screen
+    public class Screen
     {
         public int Bright { get; set; }
         public float Size { get; set; }
@@ -37,7 +36,5 @@ namespace ConsoleAutofacDI.Model
                 return hashCode;
             }
         }
-
-       
     }
 }

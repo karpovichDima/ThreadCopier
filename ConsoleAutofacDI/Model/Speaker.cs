@@ -1,7 +1,6 @@
-﻿
-namespace ConsoleAutofacDI.Model
+﻿namespace ConsoleAutofacDI.Model
 {
-    class Speaker
+    public class Speaker
     {
         public int Volume { get; set; }
     }

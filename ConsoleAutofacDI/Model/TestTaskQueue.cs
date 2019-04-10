@@ -22,7 +22,9 @@ namespace ConsoleAutofacDI.Model
             _workers = new Thread[workerCount];
             Console.WriteLine(Value + " Create and start a separate thread for each worker");
             for (var i = 0; i < workerCount; i++)
+            {
                 (_workers[i] = new Thread(Consume)).Start();
+            }
         }
 
         public void Dispose()
@@ -48,7 +50,10 @@ namespace ConsoleAutofacDI.Model
         {
             while (true)
             {
-                if (_token.IsCancellationRequested) return;
+                if (_token.IsCancellationRequested)
+                {
+                    return;
+                }
                 T task;
                 lock (_locker)
                 {
@@ -67,7 +72,10 @@ namespace ConsoleAutofacDI.Model
                 task.ToString();
 
                 var s = Console.ReadLine();
-                if (s == "1") _cancelTokenSource.Cancel();
+                if (s == "1")
+                {
+                    _cancelTokenSource.Cancel();
+                }
             }
         }
     }

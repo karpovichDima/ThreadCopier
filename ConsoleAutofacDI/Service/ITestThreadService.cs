@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ConsoleAutofacDI.Service
+﻿namespace ConsoleAutofacDI.Service
 {
-    partial interface ITestThreadService
+    public interface ITestThreadService
     {
         void CreateThreeTask();
         void TaskWithReturnValue();

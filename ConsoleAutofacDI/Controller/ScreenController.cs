@@ -4,7 +4,7 @@ using ConsoleAutofacDI.Model;
 
 namespace ConsoleAutofacDI.Controller
 {
-    class ScreenController
+    public class ScreenController
     {
         internal IScreenService ScreenService { get; set; }
 
@@ -17,7 +17,5 @@ namespace ConsoleAutofacDI.Controller
         {
             ScreenService.Show(new Screen {Bright = 54});
         }
-
-
     }
 }

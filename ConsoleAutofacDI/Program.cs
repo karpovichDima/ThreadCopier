@@ -7,9 +7,9 @@ using ConsoleAutofacDI.Service.Impl;
 
 namespace ConsoleAutofacDI
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             AbstractContainer.AbsContainer = UnityInit.GetInstance();
             RegistrationDependency();
@@ -25,7 +25,7 @@ namespace ConsoleAutofacDI
             Console.ReadKey();
         }
 
-        static void RegistrationDependency()
+        public static void RegistrationDependency()
         {
             AbstractContainer.AbsContainer.RegistrationDependency<IScreenService, BlackScreenServiceImpl>();
             AbstractContainer.AbsContainer.RegistrationDependency<IThreadService, ThreadServiceImpl>();

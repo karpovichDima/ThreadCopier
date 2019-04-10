@@ -13,9 +13,9 @@ namespace ConsoleAutofacDI.Model
         private readonly Thread[] _workers;
         private readonly Queue<ThreadServiceImpl.Task> _taskQ;
         private readonly CancellationToken _token;
-        private Queue<FileInfo> _files;
-        private CancellationTokenSource _tokenSource;
-        private CancellationToken _cancelToken;
+        private readonly Queue<FileInfo> _files;
+        private readonly CancellationTokenSource _tokenSource;
+        private readonly CancellationToken _cancelToken;
 
         public TaskQueue(int workerCount, Queue<FileInfo> files, CancellationTokenSource tokenSource,
             CancellationToken cancelToken)
@@ -78,7 +78,7 @@ namespace ConsoleAutofacDI.Model
                     {
                         _cancelToken.ThrowIfCancellationRequested();
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         Console.WriteLine("EXCEPTION - THE END");
                         return;

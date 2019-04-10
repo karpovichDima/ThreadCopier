@@ -2,12 +2,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 using ConsoleAutofacDI.IoC;
-using ConsoleAutofacDI.Model;
 using ConsoleAutofacDI.Service;
 
 namespace ConsoleAutofacDI.Controller
 {
-    class ThreadController
+    public class ThreadController
     {
         internal IThreadService ThreadService { get; set; }
 

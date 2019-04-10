@@ -3,7 +3,7 @@ using ConsoleAutofacDI.Model;
 
 namespace ConsoleAutofacDI.Service.Impl
 {
-    class BlueScreenServiceImpl : IScreenService
+    public class BlueScreenServiceImpl : IScreenService
     {
         public void Show(Screen screen) => Console.WriteLine("2.BLUE SCREEN show image | bright:  " + screen.Bright);
 

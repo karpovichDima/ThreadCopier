@@ -2,7 +2,7 @@
 
 namespace ConsoleAutofacDI.IoC.Impl
 {
-    class UnityInit : AbstractContainer
+    public class UnityInit : AbstractContainer
     {
         private static UnityInit _unityInit;
         public IUnityContainer Container { get; set; }
