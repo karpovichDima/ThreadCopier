@@ -20,8 +20,10 @@ namespace ConsoleAutofacDI.Controller
 
         public void StartCopyingFiles()
         {
-            Task.Run(() => ThreadService.StartCopyingFiles(_tokenSource, _tokenSource.Token));
+            Task.Run(() => ThreadService.StartCopyingFiles(_tokenSource));
+
             var readLine = Console.ReadLine();
+
             if (readLine == "#")
             {
                 _tokenSource.Cancel();

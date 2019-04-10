@@ -8,33 +8,37 @@ namespace ConsoleAutofacDI.Model
 {
     public class TaskQueue : IDisposable
     {
-        public const string Value = "\n";
         private readonly object _locker = new object();
-        private readonly Thread[] _workers;
-        private readonly Queue<ThreadServiceImpl.Task> _taskQ;
-        private readonly CancellationToken _token;
-        private readonly Queue<FileInfo> _files;
-        private readonly CancellationTokenSource _tokenSource;
-        private readonly CancellationToken _cancelToken;
 
-        public TaskQueue(int workerCount, Queue<FileInfo> files, CancellationTokenSource tokenSource,
-            CancellationToken cancelToken)
+        private readonly Thread[] _workers;
+
+        private readonly CancellationTokenSource _tokenSource;
+
+        private readonly Queue<ThreadServiceImpl.Task> _queueTasks;
+        private readonly Queue<FileInfo> _queueFiles;
+
+        public TaskQueue(int workerCount, 
+                        Queue<FileInfo> queueFiles, 
+                        CancellationTokenSource tokenSource)
         {
-            _cancelToken = cancelToken;
             _tokenSource = tokenSource;
-            _files = files;
-            _taskQ = new Queue<ThreadServiceImpl.Task>();
-            Console.WriteLine($"{Value}Set 1 for decline task or other symbol for continue:");
+            _queueFiles = queueFiles;
+            _queueTasks = new Queue<ThreadServiceImpl.Task>();
+
+            Console.WriteLine("\n Set 1 for decline task or other symbol for continue:");
 
             _workers = new Thread[workerCount];
-            Console.WriteLine($"{Value} Create and start a separate thread for each worker");
+
+            Console.WriteLine("\n Create and start a separate thread for each worker");
             for (var i = 0; i < workerCount; i++)
+            {
                 (_workers[i] = new Thread(Consume)).Start();
+            }
         }
 
         public void Dispose()
         {
-            Console.WriteLine($"{Value}Enqueue one null task per worker to make each exit.");
+            Console.WriteLine("\n Enqueue one null task per worker to make each exit.");
             foreach (var worker in _workers)
             {
                 EnqueueTask(null);
@@ -46,7 +50,7 @@ namespace ConsoleAutofacDI.Model
         {
             lock (_locker)
             {
-                _taskQ.Enqueue(task);
+                _queueTasks.Enqueue(task);
                 Monitor.PulseAll(_locker);
             }
         }
@@ -55,28 +59,37 @@ namespace ConsoleAutofacDI.Model
         {
             while (true)
             {
-                if (_token.IsCancellationRequested) return;
+                if (_tokenSource.Token.IsCancellationRequested)
+                {
+                    return;
+                }
+
                 ThreadServiceImpl.Task task;
+
                 lock (_locker)
                 {
-                    while (_taskQ.Count == 0) Monitor.Wait(_locker);
-                    task = _taskQ.Dequeue();
+                    while (_queueTasks.Count == 0)
+                    {
+                        Monitor.Wait(_locker);
+                    }
+
+                    task = _queueTasks.Dequeue();
                 }
 
                 if (task == null)
                 {
-                    Console.WriteLine($"{Value}This signals our exit");
+                    Console.WriteLine("\n This signals our exit");
                     return;
                 }
 
-                Console.WriteLine($"{Value}Simulate time-consuming task");
-                task(_files.Dequeue());
+                Console.WriteLine("\n Simulate time-consuming task");
+                task(_queueFiles.Dequeue());
 
-                if (_tokenSource.IsCancellationRequested)
+                if (_tokenSource.Token.IsCancellationRequested)
                 {
                     try
                     {
-                        _cancelToken.ThrowIfCancellationRequested();
+                        _tokenSource.Token.ThrowIfCancellationRequested();
                     }
                     catch (Exception)
                     {

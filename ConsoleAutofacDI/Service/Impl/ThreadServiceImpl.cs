@@ -10,31 +10,28 @@ namespace ConsoleAutofacDI.Service.Impl
     {
         public delegate void Task(FileInfo fileInfo);
 
-        private Task _task;
-
         public static int ThreadCount = 1;
-            
-        public void StartCopyingFiles(CancellationTokenSource tokenSource, CancellationToken cancelToken)
+        
+        public void StartCopyingFiles(CancellationTokenSource tokenSource)
         {
             var queueFiles = new Queue<FileInfo>();
+            var directoryInfo = new DirectoryInfo("W:\\Copy_1");
 
-            var dr = new DirectoryInfo("W:\\Copy_1");
-
-            foreach (var file in dr.GetFiles("*.txt"))
+            foreach (var file in directoryInfo.GetFiles("*.txt"))
             {
                 queueFiles.Enqueue(file);
             }
 
-            var taskQueue = new TaskQueue(ThreadCount, queueFiles, tokenSource, cancelToken);
+            var queueTasks = new TaskQueue(ThreadCount, queueFiles, tokenSource);
 
-            _task = Copier;
+            Task task = Copier;
 
             for (var i = 0; i < queueFiles.Count; i++)
             {
-                taskQueue.EnqueueTask(_task);
+                queueTasks.EnqueueTask(task);
             }
         }
-        
+
         private static void Copier(FileInfo fileInfo)
         {
             var fileName = fileInfo.Name;

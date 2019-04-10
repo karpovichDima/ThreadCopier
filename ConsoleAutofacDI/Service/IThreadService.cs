@@ -4,6 +4,6 @@ namespace ConsoleAutofacDI.Service
 {
     interface IThreadService
     {
-        void StartCopyingFiles(CancellationTokenSource tokenSource, CancellationToken cancelToken);
+        void StartCopyingFiles(CancellationTokenSource tokenSource);
     }
 }
