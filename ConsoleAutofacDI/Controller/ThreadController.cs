@@ -11,19 +11,17 @@ namespace ConsoleAutofacDI.Controller
     {
         internal IThreadService ThreadService { get; set; }
 
-        private CancellationTokenSource _tokenSource;
-        private CancellationToken _cancelToken;
+        private readonly CancellationTokenSource _tokenSource;
 
         public ThreadController()
         {
             _tokenSource = new CancellationTokenSource();
-            _cancelToken = _tokenSource.Token;
             ThreadService = AbstractContainer.AbsContainer.Resolve<IThreadService>();
         }
 
         public void StartCopyingFiles()
         {
-            Task.Run(() => ThreadService.StartCopyingFiles(_tokenSource, _cancelToken));
+            Task.Run(() => ThreadService.StartCopyingFiles(_tokenSource, _tokenSource.Token));
             var readLine = Console.ReadLine();
             if (readLine == "#")
             {
